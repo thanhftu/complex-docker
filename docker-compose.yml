@@ -1,0 +1,58 @@
+version: "3.9"
+networks: 
+  complex:
+services:
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_DB=root
+      - POSTGRES_PASSWORD=secret
+    ports: 
+        - "5432:5432"
+    networks: 
+      - complex
+  redis:
+    image: "redis"
+    ports:
+        - "6379:6379"
+    networks: 
+      - complex
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./complex-nginx
+    depends_on: 
+      - api
+      - client
+    ports:
+      - "3050:80"
+    networks: 
+      - complex
+  api:
+    build:
+      context: ./api-multi
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_ADDR=redis:6379
+      - DB_SOURCE=postgresql://root:secret@postgres:5432/root?sslmode=disable
+    ports: 
+      - "8081:8081"
+    networks:
+      - complex
+    command: ["/app/main"]
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./react-docker
+    volumes:
+      - /app/node_modules
+      - ./react-docker:/app
+    networks: 
+      - complex
