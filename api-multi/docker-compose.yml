@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=root
+  redis:
+    image: redis
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - redis
+    environment: 
+      - DB_SOURCE=postgresql://root:secret@postgres:5432/root?sslmode=disable
+    # entrypoint: ["/app/wait-for", "postgres:5432", "--", "/app/main"]
+    command: ["/app/main"]
