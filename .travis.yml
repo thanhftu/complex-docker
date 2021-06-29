@@ -1,0 +1,32 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t thanhdhnt/react-test -f ./react-docker/Dockerfile.dev ./react-docker
+
+script:
+  - docker run -e CI=true thanhdhnt/react-test npm test
+
+after_success:
+  - docker build -t thanhdhnt/complex-client ./react-docker
+  - docker build -t thanhdhnt/complex-nginx ./complex-nginx
+  - docker build -t thanhdhnt/complex-api ./api-multi
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push thanhdhnt/complex-client
+  - docker push thanhdhnt/complex-nginx
+  - docker push thanhdhnt/complex-api
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-1"
+#   app: "docker-react"
+#   env: "DockerReact-env"
+#   bucket_name: "elasticbeanstalk-us-east-1-094140934317"
+#   bucket_path: "docker-react"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key:
+#     secure: "$AWS_SECRET_KEY"
