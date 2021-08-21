@@ -29,7 +29,7 @@ func init() {
 	var err error
 	config := ServiceConfig{
 		DBDriver: "postgres",
-		DBSource: "postgresql://root:secret@localhost:5432/root?sslmode=disable",
+		DBSource: "postgresql://root:secret@localhost:5432/fibonacci?sslmode=disable",
 	}
 	if v := os.Getenv("DB_SOURCE"); v != "" {
 		config.DBSource = v

@@ -19,15 +19,16 @@ after_success:
   - docker push thanhdhnt/complex-client
   - docker push thanhdhnt/complex-nginx
   - docker push thanhdhnt/complex-api
-# deploy:
-#   provider: elasticbeanstalk
-#   region: "us-east-1"
-#   app: "docker-react"
-#   env: "DockerReact-env"
-#   bucket_name: "elasticbeanstalk-us-east-1-094140934317"
-#   bucket_path: "docker-react"
-#   on:
-#     branch: master
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key:
-#     secure: "$AWS_SECRET_KEY"
+deploy:
+  provider: elasticbeanstalk
+  region: ap-southeast-1
+  app: multi-docker
+  env: Multidocker-env
+  bucket_name: elasticbeanstalk-ap-southeast-1-077287700844
+  bucket_path: multi-docker
+  on:
+    branch: master
+  access_key_id: 
+    secure: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"

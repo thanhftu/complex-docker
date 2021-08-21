@@ -2,6 +2,7 @@ package fib
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/thanhftu/api-multi/db/pg/fibnumdb"
 )
@@ -15,10 +16,10 @@ const (
 )
 
 type FibNumber struct {
-	ID    int64
-	Index int64
-	Value int64
-	// Created_at string
+	ID         int64
+	Index      int64
+	Value      int64
+	Created_at time.Time
 }
 
 func (fib *FibNumber) SAVE() error {
@@ -27,7 +28,7 @@ func (fib *FibNumber) SAVE() error {
 		return err
 	}
 	defer stmt.Close()
-	errSave := stmt.QueryRow(fib.Index, fib.Value).Scan(&fib.ID, &fib.Index, &fib.Value)
+	errSave := stmt.QueryRow(fib.Index, fib.Value).Scan(&fib.ID, &fib.Index, &fib.Value, &fib.Created_at)
 	if errSave != nil {
 		return err
 	}
@@ -41,7 +42,7 @@ func (fib *FibNumber) GET() error {
 		return err
 	}
 	result := stmt.QueryRow(fib.Index)
-	if err := result.Scan(&fib.ID, &fib.Index, &fib.Value); err != nil {
+	if err := result.Scan(&fib.ID, &fib.Index, &fib.Value, &fib.Created_at); err != nil {
 		return err
 	}
 	return nil
@@ -67,7 +68,7 @@ func GETALL() ([]FibNumber, error) {
 	Fibs := make([]FibNumber, 0)
 	for rows.Next() {
 		fib := FibNumber{}
-		if err := rows.Scan(&fib.ID, &fib.Index, &fib.Value); err != nil {
+		if err := rows.Scan(&fib.ID, &fib.Index, &fib.Value, &fib.Created_at); err != nil {
 			return nil, err
 		}
 		Fibs = append(Fibs, fib)
