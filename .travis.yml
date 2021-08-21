@@ -21,14 +21,12 @@ after_success:
   - docker push thanhdhnt/complex-api
 deploy:
   provider: elasticbeanstalk
-  region: ap-southeast-1
-  app: multi-docker
-  env: Multidocker-env
-  bucket_name: elasticbeanstalk-ap-southeast-1-077287700844
-  bucket_path: multi-docker
+  region: "ap-southeast-1"
+  app: "multi-docker"
+  env: "Multidocker-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-1-077287700844"
+  bucket_path: "multi-docker"
   on:
     branch: master
-  access_key_id: 
-    secure: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: $AWS_SECRET_KEY
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
