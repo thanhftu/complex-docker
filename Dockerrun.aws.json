@@ -10,7 +10,7 @@
         },
         {
             "name":"server",
-            "image":"thanhdhnt/complex-server",
+            "image":"thanhdhnt/complex-api",
             "hostname":"api",
             "essential":false,
             "memory":128
