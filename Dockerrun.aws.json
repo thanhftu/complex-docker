@@ -3,21 +3,21 @@
     "containerDefinitions":[
         {
             "name":"client",
-            "image":"thanhdhnt/multi-client",
+            "image":"thanhdhnt/complex-client",
             "hostname":"client",
             "essential":false,
             "memory":128
         },
         {
             "name":"server",
-            "image":"thanhdhnt/multi-server",
+            "image":"thanhdhnt/complex-server",
             "hostname":"api",
             "essential":false,
             "memory":128
         },
         {
             "name":"nginx",
-            "image":"thanhdhnt/multi-nginx",
+            "image":"thanhdhnt/complex-nginx",
             "hostname":"nginx",
             "essential":true,
             "portMappings":[
